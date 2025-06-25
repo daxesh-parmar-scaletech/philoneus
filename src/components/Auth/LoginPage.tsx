@@ -7,22 +7,20 @@ const LoginPage: React.FC = () => {
     const { login } = useAuth();
 
     const [isLoading] = useState(false);
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [touched, setTouched] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = React.useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setTouched(true);
-        if (username.trim() && password.trim()) {
-            const success = login(username, password);
-            setError(!success ? 'Invalid username or password.' : null);
+        if (email.trim() && password.trim()) {
+            login(email, password);
         }
     };
 
-    const isFormValid = username.trim() !== '' && password.trim() !== '';
+    const isFormValid = email.trim() !== '' && password.trim() !== '';
 
     return (
         <div className='min-h-screen flex flex-col md:flex-row bg-gray-100 font-sans'>
@@ -58,14 +56,14 @@ const LoginPage: React.FC = () => {
                     <p className='text-center text-gray-600 mb-8'>Please sign in with your credentials.</p>
                     <form className='space-y-6' onSubmit={handleSubmit} noValidate>
                         <InputField
-                            label='Username'
-                            id='username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            label='Email'
+                            id='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             onBlur={() => setTouched(true)}
-                            placeholder='Enter your username'
-                            autoComplete='username'
-                            error={touched && !username.trim() ? 'Username is required.' : null}
+                            placeholder='Enter your email'
+                            autoComplete='email'
+                            error={touched && !email.trim() ? 'Email is required.' : null}
                         />
                         <InputField
                             label='Password'
@@ -82,12 +80,6 @@ const LoginPage: React.FC = () => {
                             setShowPassword={setShowPassword}
                         />
                         {/* Error message from API */}
-                        {error && (
-                            <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative' role='alert'>
-                                <strong className='font-bold'>Error!</strong>
-                                <span className='block sm:inline ml-2'>{error}</span>
-                            </div>
-                        )}
                         <button
                             type='submit'
                             className={`
