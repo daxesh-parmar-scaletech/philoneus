@@ -17,6 +17,8 @@ export default defineConfig({
             shared: path.resolve(__dirname, 'src/shared'),
             hooks: path.resolve(__dirname, 'src/hooks'),
             contexts: path.resolve(__dirname, 'src/contexts'),
+            assets: path.resolve(__dirname, 'src/assets'),
+            components: path.resolve(__dirname, 'src/components'),
         },
     },
 });

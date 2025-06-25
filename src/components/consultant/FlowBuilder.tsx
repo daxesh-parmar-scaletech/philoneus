@@ -1,23 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Brain, Save, Eye, Share2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Brain, Save, Eye } from 'lucide-react';
+
 import FlowSetup from './FlowSetup';
 import QuestionBuilder from './QuestionBuilder';
 import CanvasConfig from './CanvasConfig';
 import SharePublish from './SharePublish';
+import { useFlow, FlowData } from 'contexts/FlowContext';
 
 export default function FlowBuilder() {
     const { id } = useParams();
+    const { createFlow, updateFlow, flows } = useFlow();
     const [currentStep, setCurrentStep] = useState(1);
-    const [flowData, setFlowData] = useState({
+    const [flowData, setFlowData] = useState<FlowData>({
         title: '',
         description: '',
-        canvasType: 'business-model' as const,
+        canvasType: 'business-model',
         questions: [],
         canvasSections: [],
         isPublished: false,
         allowReviews: true,
     });
+    const [successMsg, setSuccessMsg] = useState<string | null>(null);
+    const navigate = useNavigate();
+    // If editing, load the flow data
+    useEffect(() => {
+        if (id) {
+            const existing = flows.find((f) => f.id === id);
+            if (existing) {
+                setFlowData({
+                    title: existing.title,
+                    description: existing.description,
+                    canvasType: existing.canvasType,
+                    questions: existing.questions,
+                    canvasSections: existing.canvasSections,
+                    isPublished: existing.isPublished,
+                    allowReviews: existing.allowReviews,
+                });
+            }
+        }
+    }, [id, flows]);
 
     const steps = [
         { number: 1, title: 'Setup', component: FlowSetup },
@@ -40,8 +62,22 @@ export default function FlowBuilder() {
         }
     };
 
-    const handleFlowDataChange = (updates: any) => {
+    const handleFlowDataChange = (updates: Partial<FlowData>) => {
         setFlowData((prev) => ({ ...prev, ...updates }));
+    };
+
+    const handleSave = () => {
+        if (id) {
+            updateFlow(id, flowData);
+            setSuccessMsg('Event updated successfully!');
+        } else {
+            console.log('Creating new event with data:', flowData);
+
+            createFlow(flowData);
+            setSuccessMsg('Event created successfully!');
+        }
+        navigate('/consultant');
+        setTimeout(() => setSuccessMsg(null), 2000);
     };
 
     return (
@@ -60,15 +96,18 @@ export default function FlowBuilder() {
                                 </div>
                                 <div>
                                     <h1 className='text-lg font-semibold text-gray-900'>
-                                        {id ? 'Edit Flow' : 'Create New Flow'} - Step {currentStep}: {steps[currentStep - 1].title}
+                                        {id ? 'Edit Event' : 'Create New Event'} - Step {currentStep}: {steps[currentStep - 1].title}
                                     </h1>
                                 </div>
                             </div>
                         </div>
                         <div className='flex items-center space-x-3'>
-                            <button className='px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2'>
+                            <button
+                                className='px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2'
+                                onClick={handleSave}
+                            >
                                 <Save className='w-4 h-4' />
-                                <span>Save Draft</span>
+                                <span>{id ? 'Update Event' : 'Save Draft'}</span>
                             </button>
                             {currentStep === steps.length && (
                                 <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2'>
@@ -82,11 +121,16 @@ export default function FlowBuilder() {
             </header>
 
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+                {successMsg && (
+                    <div className='mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg text-center font-semibold'>
+                        {successMsg}
+                    </div>
+                )}
                 <div className='flex gap-8'>
                     {/* Sidebar Navigation */}
                     <div className='w-64 flex-shrink-0'>
                         <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-4'>
-                            <h3 className='font-semibold text-gray-900 mb-4'>Flow Builder Steps</h3>
+                            <h3 className='font-semibold text-gray-900 mb-4'>Event Builder Steps</h3>
                             <nav className='space-y-2'>
                                 {steps.map((step) => (
                                     <button
