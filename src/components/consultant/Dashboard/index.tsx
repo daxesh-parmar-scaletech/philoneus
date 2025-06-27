@@ -1,15 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Plus, ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import Events from './events';
 import ReviewRequests from './reviewRequests';
 import Header from './header';
 
 export default function Dashboard() {
+    const { t, i18n } = useTranslation();
+
     return (
         <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
             {/* Header */}
             <Header />
+            <h1>{t('welcome')}</h1>
+            <button onClick={() => i18n.changeLanguage('en')}>EN</button>
+
+            <button className='bg-slate-400 border p-4' onClick={() => i18n.changeLanguage('de')}>
+                DE
+            </button>
 
             {/* Main Content */}
             <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
