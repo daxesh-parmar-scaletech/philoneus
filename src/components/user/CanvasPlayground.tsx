@@ -6,13 +6,13 @@ import { useFlow } from '../../contexts/FlowContext';
 export default function CanvasPlayground() {
     const { shareId } = useParams();
     const navigate = useNavigate();
-    const { getFlowByShareId, userSession, updateCanvasSection } = useFlow();
+    const { currentFlow, userSession, updateCanvasSection } = useFlow();
     const [isLoading, setIsLoading] = useState(true);
     const [selectedSection, setSelectedSection] = useState<string | null>(null);
     const [aiSuggestion, setAiSuggestion] = useState<string>('');
     const [canvasData, setCanvasData] = useState<Record<string, string>>({});
 
-    const flow = shareId ? getFlowByShareId(shareId) : null;
+    const flow = currentFlow;
 
     useEffect(() => {
         // Simulate AI generation
@@ -20,7 +20,6 @@ export default function CanvasPlayground() {
             const timer = setTimeout(() => {
                 // Pre-populate canvas with AI-generated content
                 const mockCanvasData = generateMockCanvasData(flow.canvasType);
-                console.log(' mockCanvasData:', flow.canvasType);
                 setCanvasData(mockCanvasData);
                 setIsLoading(false);
             }, 3000);

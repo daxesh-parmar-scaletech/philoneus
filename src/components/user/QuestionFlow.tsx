@@ -6,11 +6,11 @@ import { useFlow } from '../../contexts/FlowContext';
 export default function QuestionFlow() {
     const { shareId } = useParams();
     const navigate = useNavigate();
-    const { getFlowByShareId, updateUserAnswers } = useFlow();
+    const { currentFlow, updateUserAnswers } = useFlow();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<Record<string, any>>({});
 
-    const flow = shareId ? getFlowByShareId(shareId) : null;
+    const flow = currentFlow;
 
     if (!flow) {
         navigate(`/flow/${shareId}`);

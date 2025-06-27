@@ -1,15 +1,31 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Play, User, Award, Clock } from 'lucide-react';
 import { useFlow } from '../../contexts/FlowContext';
+import { useEffect } from 'react';
 
 export default function UserLanding() {
     const { shareId } = useParams();
     const navigate = useNavigate();
-    const { getFlowByShareId, startUserSession } = useFlow();
+    const { currentFlow, startUserSession, fetchWorkshopDetails, detailLoading } = useFlow();
 
-    const flow = shareId ? getFlowByShareId(shareId) : null;
+    useEffect(() => {
+        if (shareId) {
+            fetchWorkshopDetails(shareId);
+        }
+    }, [shareId, fetchWorkshopDetails]);
 
-    if (!flow) {
+    if (detailLoading) {
+        return (
+            <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+                <div className='text-center'>
+                    <h1 className='text-2xl font-bold text-gray-900 mb-2'>Loading...</h1>
+                    <p className='text-gray-600'>Please wait while we fetch the flow details.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!currentFlow) {
         return (
             <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
                 <div className='text-center'>
@@ -21,8 +37,8 @@ export default function UserLanding() {
     }
 
     const handleStartSession = () => {
-        startUserSession(flow.id);
-        navigate(`/flow/${flow.id}/questions`);
+        startUserSession(currentFlow.id);
+        navigate(`/flow/${currentFlow.id}/questions`);
     };
 
     return (
@@ -41,8 +57,8 @@ export default function UserLanding() {
                 <div className='bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden'>
                     {/* Header */}
                     <div className='bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-12 text-white text-center'>
-                        <h2 className='text-3xl font-bold mb-4'>{flow.title}</h2>
-                        <p className='text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed'>{flow.description}</p>
+                        <h2 className='text-3xl font-bold mb-4'>{currentFlow.title}</h2>
+                        <p className='text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed'>{currentFlow.description}</p>
                     </div>
 
                     {/* Content */}
@@ -105,7 +121,7 @@ export default function UserLanding() {
 
                 {/* Trust Indicators */}
                 <div className='text-center mt-8'>
-                    <p className='text-sm text-gray-500'>Join {flow.completions}+ professionals who have already completed this assessment</p>
+                    <p className='text-sm text-gray-500'>Join {currentFlow.completions}+ professionals who have already completed this assessment</p>
                 </div>
             </div>
         </div>

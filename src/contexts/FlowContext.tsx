@@ -56,6 +56,7 @@ interface FlowContextType {
     fetchWorkshops: () => void;
     fetchWorkshopDetails: (id: string) => Promise<Flow | null>;
     detailLoading: boolean;
+    currentFlow: Flow | null;
 }
 
 const FlowContext = createContext<FlowContextType | null>(null);
@@ -67,6 +68,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     const [userSession, setUserSession] = useState<UserSession | null>(null);
     const [loading, setLoading] = useState(false);
     const [detailLoading, setDetailLoading] = useState(false);
+    const [currentFlow, setCurrentFlow] = useState<Flow | null>(null);
 
     const createFlow = useCallback((flowData: Flow) => {
         setFlows((prev) => [...prev, flowData]);
@@ -129,6 +131,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         setDetailLoading(true);
         try {
             const response = await HttpService.get(`${API_CONFIG.workshops}/${id}`);
+            setCurrentFlow(response.data);
             return response.data;
         } catch (error) {
             console.error('Failed to fetch workshops:', error);
@@ -148,6 +151,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
             userSession,
             loading,
             detailLoading,
+            currentFlow,
             fetchWorkshopDetails,
             createFlow,
             updateFlow,
@@ -162,6 +166,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
             userSession,
             loading,
             detailLoading,
+            currentFlow,
             fetchWorkshopDetails,
             createFlow,
             updateFlow,
