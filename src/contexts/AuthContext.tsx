@@ -7,7 +7,7 @@ import HttpService from 'shared/services/http.service';
 // Define the shape of the context
 interface AuthContextType {
     user: IUserData | null;
-    login: (username: string, password: string) => boolean;
+    login: (username: string, password: string) => void;
     logout: () => void;
 }
 

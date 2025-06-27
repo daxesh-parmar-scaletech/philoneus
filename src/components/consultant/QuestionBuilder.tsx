@@ -22,7 +22,7 @@ export default function QuestionBuilder({ flowData, onFlowDataChange }: Question
     const questionTypes = [
         { value: 'text', label: 'Text Input' },
         { value: 'multiple-choice', label: 'Multiple Choice' },
-        { value: 'single-select', label: 'Single Select' },
+        { value: 'single-choice', label: 'Single Select' },
         { value: 'rating', label: 'Rating Scale' },
         { value: 'number', label: 'Number' },
     ];
@@ -70,7 +70,7 @@ export default function QuestionBuilder({ flowData, onFlowDataChange }: Question
 
     const addOption = (questionId: string) => {
         const question = questions.find((q) => q.id === questionId);
-        if (question && (question.type === 'multiple-choice' || question.type === 'single-select')) {
+        if (question && (question.type === 'multiple-choice' || question.type === 'single-choice')) {
             const newOptions = [...(question.options || []), ''];
             updateQuestion(questionId, { options: newOptions });
         }
@@ -191,7 +191,7 @@ export default function QuestionBuilder({ flowData, onFlowDataChange }: Question
                                             </div>
                                         </div>
 
-                                        {(question.type === 'multiple-choice' || question.type === 'single-select') && (
+                                        {(question.type === 'multiple-choice' || question.type === 'single-choice') && (
                                             <div>
                                                 <div className='flex items-center justify-between mb-3'>
                                                     <label className='block text-sm font-medium text-gray-700'>Options</label>

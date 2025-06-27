@@ -18,7 +18,7 @@ export interface ISortData {
 export type OrderType = 'ASC' | 'DESC';
 
 export interface IUserData {
-    token: string;
+    accessToken: string;
     user: UserData;
 }
 

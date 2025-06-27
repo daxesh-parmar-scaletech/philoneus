@@ -12,14 +12,14 @@ export default function ConsultantHelp() {
             title: 'Getting Started',
             icon: Book,
             articles: [
-                { title: 'Creating Your First Event', content: 'Learn how to build your first AI-powered business canvas event from scratch.' },
+                { title: 'Creating Your First Flow', content: 'Learn how to build your first AI-powered business canvas flow from scratch.' },
                 { title: 'Understanding Canvas Types', content: 'Explore different canvas templates and when to use each one.' },
                 { title: 'Setting Up Your Profile', content: 'Customize your consultant profile and branding.' },
             ],
         },
         {
             id: 'flow-builder',
-            title: 'Event Builder',
+            title: 'Flow Builder',
             icon: HelpCircle,
             articles: [
                 { title: 'Designing Effective Questions', content: 'Best practices for creating questions that generate valuable insights.' },
@@ -42,8 +42,8 @@ export default function ConsultantHelp() {
             title: 'Sharing & Publishing',
             icon: MessageCircle,
             articles: [
-                { title: 'Publishing Your Event', content: 'Make your event available to clients and track engagement.' },
-                { title: 'Share Options', content: 'Different ways to distribute your event to clients.' },
+                { title: 'Publishing Your Flow', content: 'Make your flow available to clients and track engagement.' },
+                { title: 'Share Options', content: 'Different ways to distribute your flow to clients.' },
                 { title: 'Review Requests', content: 'Manage and respond to client review requests.' },
             ],
         },
@@ -106,7 +106,7 @@ export default function ConsultantHelp() {
                                     className='w-full px-4 py-3 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors flex items-center space-x-2'
                                 >
                                     <Book className='w-4 h-4' />
-                                    <span>Create New Event</span>
+                                    <span>Create New Flow</span>
                                 </Link>
                             </div>
 

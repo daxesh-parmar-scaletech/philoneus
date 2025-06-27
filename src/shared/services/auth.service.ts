@@ -52,8 +52,8 @@ const removeAuthData = (key = 'authData'): void => {
  */
 const getAccessToken = (): string => {
     const data = getAuthData();
-    if (data && data.token) {
-        return data.token;
+    if (data && data.accessToken) {
+        return data.accessToken;
     } else {
         return '';
     }

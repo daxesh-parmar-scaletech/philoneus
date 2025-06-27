@@ -18,10 +18,10 @@ function App() {
     const { user } = useAuth();
 
     return (
-        <FlowProvider>
-            <Router>
-                {!isEmpty(user) ? (
-                    <div className='min-h-screen bg-gray-50'>
+        <Router>
+            {!isEmpty(user) ? (
+                <div className='min-h-screen bg-gray-50'>
+                    <FlowProvider>
                         <Routes>
                             {/* Consultant Portal */}
                             <Route path='/' element={<Dashboard />} />
@@ -38,16 +38,16 @@ function App() {
                             <Route path='/flow/:shareId/complete' element={<ReviewRequest />} />
                             <Route path='*' element={<Navigate to='/' />} />
                         </Routes>
-                    </div>
-                ) : (
-                    <Routes>
-                        {/* Consultant Portal */}
-                        <Route path='/login' element={<LoginPage />} />
-                        <Route path='*' element={<Navigate to='/login' />} />
-                    </Routes>
-                )}
-            </Router>
-        </FlowProvider>
+                    </FlowProvider>
+                </div>
+            ) : (
+                <Routes>
+                    {/* Consultant Portal */}
+                    <Route path='/login' element={<LoginPage />} />
+                    <Route path='*' element={<Navigate to='/login' />} />
+                </Routes>
+            )}
+        </Router>
     );
 }
 

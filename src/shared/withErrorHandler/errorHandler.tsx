@@ -13,7 +13,7 @@ const ErrorHandler: FC = () => {
         const resInterceptor = axiosInstance.interceptors.response.use(
             (res: AxiosResponse<IResponseObject<any>>) => {
                 const data = res.data;
-                if (data && data.message) {
+                if (data?.message) {
                     if (data.is_error) {
                         notify(data.message, 'error');
                         throw new Error(data.message as string);
@@ -27,7 +27,7 @@ const ErrorHandler: FC = () => {
             (error: AxiosError<IResponseObject<any>>) => {
                 const res = error.response;
                 // check if error is having data
-                if (res && res.data && res.status) {
+                if (res?.data && res?.status) {
                     const status = res.status;
                     const responseData = res.data;
 

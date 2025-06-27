@@ -35,7 +35,7 @@ export default function Header() {
                         </div>
                     </div>
                     <nav className='flex items-center space-x-8'>
-                        <span className='text-blue-600 font-medium border-b-2 border-blue-600 pb-1'>My Events</span>
+                        <span className='text-blue-600 font-medium border-b-2 border-blue-600 pb-1'>My Flows</span>
                         <Link
                             to='/consultant/profile'
                             className='text-gray-500 hover:text-gray-700 cursor-pointer transition-colors flex items-center space-x-1'

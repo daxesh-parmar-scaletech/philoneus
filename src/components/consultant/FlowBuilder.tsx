@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Brain, Save, Eye } from 'lucide-react';
 
@@ -7,10 +7,12 @@ import QuestionBuilder from './QuestionBuilder';
 import CanvasConfig from './CanvasConfig';
 import SharePublish from './SharePublish';
 import { useFlow, FlowData } from 'contexts/FlowContext';
+import HttpService from 'shared/services/http.service';
+import { API_CONFIG } from 'shared/constants/api';
 
 export default function FlowBuilder() {
     const { id } = useParams();
-    const { createFlow, updateFlow, flows } = useFlow();
+    const { detailLoading, createFlow, updateFlow, fetchWorkshopDetails } = useFlow();
     const [currentStep, setCurrentStep] = useState(1);
     const [flowData, setFlowData] = useState<FlowData>({
         title: '',
@@ -23,23 +25,31 @@ export default function FlowBuilder() {
     });
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
     const navigate = useNavigate();
-    // If editing, load the flow data
-    useEffect(() => {
-        if (id) {
-            const existing = flows.find((f) => f.id === id);
-            if (existing) {
+
+    const fetchDetails = useCallback(
+        async (id: string) => {
+            const details = await fetchWorkshopDetails(id);
+            if (details) {
                 setFlowData({
-                    title: existing.title,
-                    description: existing.description,
-                    canvasType: existing.canvasType,
-                    questions: existing.questions,
-                    canvasSections: existing.canvasSections,
-                    isPublished: existing.isPublished,
-                    allowReviews: existing.allowReviews,
+                    title: details.title,
+                    description: details.description,
+                    canvasType: details.canvasType,
+                    questions: details.questions,
+                    canvasSections: details.canvasSections,
+                    isPublished: details.isPublished,
+                    allowReviews: details.allowReviews,
                 });
             }
+        },
+        [fetchWorkshopDetails]
+    );
+
+    // Fetch workshop details if editing
+    useEffect(() => {
+        if (id) {
+            fetchDetails(id);
         }
-    }, [id, flows]);
+    }, [id, fetchDetails]);
 
     const steps = [
         { number: 1, title: 'Setup', component: FlowSetup },
@@ -69,14 +79,16 @@ export default function FlowBuilder() {
     const handleSave = () => {
         if (id) {
             updateFlow(id, flowData);
-            setSuccessMsg('Event updated successfully!');
+            setSuccessMsg('Flow updated successfully!');
         } else {
-            console.log('Creating new event with data:', flowData);
-
-            createFlow(flowData);
-            setSuccessMsg('Event created successfully!');
+            HttpService.post(API_CONFIG.workshops, flowData)
+                .then((response) => {
+                    createFlow(response.data);
+                    navigate('/consultant');
+                })
+                .catch((e) => console.error('Create flow failed:', e));
+            setSuccessMsg('Flow created successfully!');
         }
-        navigate('/consultant');
         setTimeout(() => setSuccessMsg(null), 2000);
     };
 
@@ -96,7 +108,7 @@ export default function FlowBuilder() {
                                 </div>
                                 <div>
                                     <h1 className='text-lg font-semibold text-gray-900'>
-                                        {id ? 'Edit Event' : 'Create New Event'} - Step {currentStep}: {steps[currentStep - 1].title}
+                                        {id ? 'Edit Flow' : 'Create New Flow'} - Step {currentStep}: {steps[currentStep - 1].title}
                                     </h1>
                                 </div>
                             </div>
@@ -107,7 +119,7 @@ export default function FlowBuilder() {
                                 onClick={handleSave}
                             >
                                 <Save className='w-4 h-4' />
-                                <span>{id ? 'Update Event' : 'Save Draft'}</span>
+                                <span>{id ? 'Update Flow' : 'Save Draft'}</span>
                             </button>
                             {currentStep === steps.length && (
                                 <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2'>
@@ -121,6 +133,11 @@ export default function FlowBuilder() {
             </header>
 
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+                {detailLoading && (
+                    <div className='mb-4 p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center font-semibold'>
+                        Loading workshop details...
+                    </div>
+                )}
                 {successMsg && (
                     <div className='mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg text-center font-semibold'>
                         {successMsg}
@@ -130,34 +147,38 @@ export default function FlowBuilder() {
                     {/* Sidebar Navigation */}
                     <div className='w-64 flex-shrink-0'>
                         <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-4'>
-                            <h3 className='font-semibold text-gray-900 mb-4'>Event Builder Steps</h3>
+                            <h3 className='font-semibold text-gray-900 mb-4'>Flow Builder Steps</h3>
                             <nav className='space-y-2'>
-                                {steps.map((step) => (
-                                    <button
-                                        key={step.number}
-                                        onClick={() => setCurrentStep(step.number)}
-                                        className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                                            currentStep === step.number
-                                                ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                                                : currentStep > step.number
-                                                ? 'text-green-600 hover:bg-green-50'
-                                                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-                                        }`}
-                                    >
-                                        <div
-                                            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                                                currentStep === step.number
-                                                    ? 'bg-blue-600 text-white'
-                                                    : currentStep > step.number
-                                                    ? 'bg-green-600 text-white'
-                                                    : 'bg-gray-200 text-gray-600'
+                                {steps.map((step) => {
+                                    const completed = currentStep > step.number;
+                                    const isActive = currentStep === step.number;
+                                    return (
+                                        <button
+                                            key={step.number}
+                                            onClick={() => setCurrentStep(step.number)}
+                                            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                                                isActive
+                                                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                                    : completed
+                                                    ? 'text-green-600 hover:bg-green-50'
+                                                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                                             }`}
                                         >
-                                            {step.number}
-                                        </div>
-                                        <span className='font-medium'>{step.title}</span>
-                                    </button>
-                                ))}
+                                            <div
+                                                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                                                    isActive
+                                                        ? 'bg-blue-600 text-white'
+                                                        : completed
+                                                        ? 'bg-green-600 text-white'
+                                                        : 'bg-gray-200 text-gray-600'
+                                                }`}
+                                            >
+                                                {step.number}
+                                            </div>
+                                            <span className='font-medium'>{step.title}</span>
+                                        </button>
+                                    );
+                                })}
                             </nav>
                         </div>
                     </div>

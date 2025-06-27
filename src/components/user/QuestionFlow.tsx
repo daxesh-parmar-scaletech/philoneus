@@ -84,7 +84,7 @@ export default function QuestionFlow() {
                     </div>
                 );
 
-            case 'single-select':
+            case 'single-choice':
                 return (
                     <div className='space-y-3'>
                         {question.options?.map((option, index) => (

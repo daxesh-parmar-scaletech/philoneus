@@ -18,7 +18,7 @@ export default function Dashboard() {
                     <div className='bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-white relative overflow-hidden'>
                         <div className='absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-32 translate-x-32'></div>
                         <div className='relative z-10'>
-                            <h2 className='text-2xl font-bold mb-2'>Create Your Next AI Event</h2>
+                            <h2 className='text-2xl font-bold mb-2'>Create Your Next AI Flow</h2>
                             <p className='text-blue-100 mb-6'>
                                 Build intelligent business canvases that guide your clients to breakthrough insights.
                             </p>
@@ -27,7 +27,7 @@ export default function Dashboard() {
                                 className='inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-all duration-200 transform hover:scale-105 shadow-lg'
                             >
                                 <Plus className='w-5 h-5 mr-2' />
-                                Create New Event
+                                Create New Flow
                             </Link>
                         </div>
                     </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid3X3, TrendingUp, Target, Layers } from 'lucide-react';
 
 interface FlowSetupProps {
@@ -49,8 +48,8 @@ export default function FlowSetup({ flowData, onFlowDataChange }: FlowSetupProps
     return (
         <div className='p-8'>
             <div className='max-w-4xl'>
-                <h2 className='text-2xl font-bold text-gray-900 mb-2'>Event Setup</h2>
-                <p className='text-gray-600 mb-8'>Define the basic information and canvas type for your AI-powered Event.</p>
+                <h2 className='text-2xl font-bold text-gray-900 mb-2'>Flow Setup</h2>
+                <p className='text-gray-600 mb-8'>Define the basic information and canvas type for your AI-powered Flow.</p>
 
                 <div className='space-y-8'>
                     {/* Flow Information */}
