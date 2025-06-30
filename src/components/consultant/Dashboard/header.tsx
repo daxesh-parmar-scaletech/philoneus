@@ -1,13 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { User, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from 'contexts/AuthContext';
 import logo from 'assets/x.png';
+import LanguageSwitcher from '../../shared/LanguageSwitcher';
 
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation();
 
     const { logout } = useAuth();
 
@@ -30,26 +33,27 @@ export default function Header() {
                     <div className='flex items-center space-x-3'>
                         <img src={logo} alt='logo' className='text-white p-1 size-10 bg-black rounded-xl' />
                         <div>
-                            <h1 className='text-xl font-bold text-gray-900'>Delta X</h1>
-                            <p className='text-sm text-gray-500'>AI Canvas Platform</p>
+                            <h1 className='text-xl font-bold text-gray-900'>{t('dashboard.title')}</h1>
+                            <p className='text-sm text-gray-500'>{t('dashboard.subtitle')}</p>
                         </div>
                     </div>
                     <nav className='flex items-center space-x-8'>
-                        <span className='text-blue-600 font-medium border-b-2 border-blue-600 pb-1'>My Flows</span>
+                        <span className='text-blue-600 font-medium border-b-2 border-blue-600 pb-1'>{t('dashboard.myFlows')}</span>
                         <Link
                             to='/consultant/profile'
                             className='text-gray-500 hover:text-gray-700 cursor-pointer transition-colors flex items-center space-x-1'
                         >
                             <User className='w-4 h-4' />
-                            <span>Profile</span>
+                            <span>{t('auth.profile')}</span>
                         </Link>
                         <Link
                             to='/consultant/help'
                             className='text-gray-500 hover:text-gray-700 cursor-pointer transition-colors flex items-center space-x-1'
                         >
                             <HelpCircle className='w-4 h-4' />
-                            <span>Help</span>
+                            <span>{t('dashboard.help')}</span>
                         </Link>
+                        <LanguageSwitcher />
                     </nav>
                     <div className='relative' ref={dropdownRef}>
                         <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className='flex items-center space-x-3 focus:outline-none'>
@@ -64,7 +68,7 @@ export default function Header() {
                             <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200 z-50'>
                                 <div className='px-4 py-3 border-b'>
                                     <p className='text-sm font-semibold text-gray-800'>Dr. Maximilian Lude</p>
-                                    <p className='text-xs text-gray-500'>Consultant</p>
+                                    <p className='text-xs text-gray-500'>{t('dashboard.consultant')}</p>
                                 </div>
                                 <Link
                                     to='/consultant/profile'
@@ -72,7 +76,7 @@ export default function Header() {
                                     onClick={() => setIsDropdownOpen(false)}
                                 >
                                     <User className='w-4 h-4 mr-2' />
-                                    Profile
+                                    {t('auth.profile')}
                                 </Link>
                                 <div className='border-t my-1'></div>
                                 <button
@@ -83,7 +87,7 @@ export default function Header() {
                                     className='w-full text-left flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50'
                                 >
                                     <LogOut className='w-4 h-4 mr-2' />
-                                    Logout
+                                    {t('auth.logout')}
                                 </button>
                             </div>
                         )}

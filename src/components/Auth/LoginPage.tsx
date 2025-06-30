@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import InputField from './InputField';
 import loginBack from '../../assets/loginBack.jpg';
 import { useAuth } from 'contexts/AuthContext';
 
 const LoginPage: React.FC = () => {
     const { login } = useAuth();
+    const { t } = useTranslation();
 
     const [isLoading] = useState(false);
     const [email, setEmail] = useState('');
@@ -42,39 +44,36 @@ const LoginPage: React.FC = () => {
                     style={{ backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%)' }}
                 ></div>
                 <div className='relative z-20 flex flex-col items-center justify-center text-center px-4'>
-                    <h1 className='text-4xl md:text-2xl font-extrabold mt-8 drop-shadow-lg leading-tight'>Welcome, Philoneos Consultant!</h1>
-                    <p className='mt-4 text-lg max-w-md opacity-90 leading-relaxed'>
-                        Elevate your consultant practice with our Human + AI augmentation platform. Provide clients with a premium digital consulting
-                        environment
-                    </p>
+                    <h1 className='text-4xl md:text-2xl font-extrabold mt-8 drop-shadow-lg leading-tight'>{t('auth.welcomeBack')}</h1>
+                    <p className='mt-4 text-lg max-w-md opacity-90 leading-relaxed'>{t('auth.welcomeMessage')}</p>
                 </div>
             </div>
             {/* Right: Login Form */}
             <div className='md:w-1/2 flex items-center justify-center bg-white p-8'>
                 <div className='w-full max-w-md p-8 bg-white rounded-xl shadow-2xl space-y-7 border border-gray-100'>
-                    <h2 className='text-4xl font-extrabold text-gray-900 mb-6 text-center tracking-tight'> Login</h2>
-                    <p className='text-center text-gray-600 mb-8'>Please sign in with your credentials.</p>
+                    <h2 className='text-4xl font-extrabold text-gray-900 mb-6 text-center tracking-tight'>{t('auth.login')}</h2>
+                    <p className='text-center text-gray-600 mb-8'>{t('auth.signInMessage')}</p>
                     <form className='space-y-6' onSubmit={handleSubmit} noValidate>
                         <InputField
-                            label='Email'
+                            label={t('auth.email')}
                             id='email'
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={() => setTouched(true)}
-                            placeholder='Enter your email'
+                            placeholder={t('auth.emailPlaceholder')}
                             autoComplete='email'
-                            error={touched && !email.trim() ? 'Email is required.' : null}
+                            error={touched && !email.trim() ? t('auth.emailRequired') : null}
                         />
                         <InputField
-                            label='Password'
+                            label={t('auth.password')}
                             id='password'
                             type='password'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             onBlur={() => setTouched(true)}
-                            placeholder='Enter your password'
+                            placeholder={t('auth.passwordPlaceholder')}
                             autoComplete='current-password'
-                            error={touched && !password.trim() ? 'Password is required.' : null}
+                            error={touched && !password.trim() ? t('auth.passwordRequired') : null}
                             showToggle
                             showPassword={showPassword}
                             setShowPassword={setShowPassword}
@@ -107,16 +106,16 @@ const LoginPage: React.FC = () => {
                                             d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
                                         ></path>
                                     </svg>
-                                    Logging In...
+                                    {t('auth.loggingIn')}
                                 </span>
                             ) : (
-                                'Login'
+                                t('auth.login')
                             )}
                         </button>
                         <div className='text-center mt-6 text-gray-600 text-sm'>
-                            Don't have an account?
+                            {t('auth.noAccount')}
                             <a href='#' className='text-blue-600 hover:underline font-semibold'>
-                                Sign Up
+                                {t('auth.signUp')}
                             </a>
                         </div>
                     </form>
