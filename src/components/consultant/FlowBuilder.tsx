@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Brain, Save, Eye } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Brain } from 'lucide-react';
 
 import FlowSetup from './FlowSetup';
 import QuestionBuilder from './QuestionBuilder';
@@ -23,7 +23,6 @@ export default function FlowBuilder() {
         isPublished: false,
         allowReviews: true,
     });
-    const [successMsg, setSuccessMsg] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const fetchDetails = useCallback(
@@ -78,8 +77,12 @@ export default function FlowBuilder() {
 
     const handleSave = () => {
         if (id) {
-            updateFlow(id, flowData);
-            setSuccessMsg('Flow updated successfully!');
+            HttpService.put(`${API_CONFIG.workshops}/${id}`, flowData)
+                .then(() => {
+                    updateFlow(id, flowData);
+                    navigate('/consultant');
+                })
+                .catch((e) => console.error('Create flow failed:', e));
         } else {
             HttpService.post(API_CONFIG.workshops, flowData)
                 .then((response) => {
@@ -87,9 +90,7 @@ export default function FlowBuilder() {
                     navigate('/consultant');
                 })
                 .catch((e) => console.error('Create flow failed:', e));
-            setSuccessMsg('Flow created successfully!');
         }
-        setTimeout(() => setSuccessMsg(null), 2000);
     };
 
     return (
@@ -113,7 +114,7 @@ export default function FlowBuilder() {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex items-center space-x-3'>
+                        {/* <div className='flex items-center space-x-3'>
                             <button
                                 className='px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2'
                                 onClick={handleSave}
@@ -127,7 +128,7 @@ export default function FlowBuilder() {
                                     <span>Preview</span>
                                 </button>
                             )}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </header>
@@ -136,11 +137,6 @@ export default function FlowBuilder() {
                 {detailLoading && (
                     <div className='mb-4 p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center font-semibold'>
                         Loading workshop details...
-                    </div>
-                )}
-                {successMsg && (
-                    <div className='mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg text-center font-semibold'>
-                        {successMsg}
                     </div>
                 )}
                 <div className='flex gap-8'>
@@ -215,16 +211,22 @@ export default function FlowBuilder() {
                                 ))}
                             </div>
 
-                            <button
-                                onClick={handleNext}
-                                disabled={currentStep === steps.length}
-                                className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2 ${
-                                    currentStep === steps.length ? 'text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
-                                }`}
-                            >
-                                <span>Next</span>
-                                <ArrowRight className='w-4 h-4' />
-                            </button>
+                            {currentStep === steps.length ? (
+                                <button
+                                    onClick={handleSave}
+                                    className='px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold'
+                                >
+                                    {id ? 'Update Flow' : 'Save & Finish'}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleNext}
+                                    className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2 bg-blue-600 text-white hover:bg-blue-700`}
+                                >
+                                    <span>Next</span>
+                                    <ArrowRight className='w-4 h-4' />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1,20 +1,17 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Play, User, Award, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useFlow } from '../../contexts/FlowContext';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { useUserFlow } from 'contexts/userFlowContext';
+import HttpService from 'shared/services/http.service';
+import { API_CONFIG } from 'shared/constants/api';
 
 export default function UserLanding() {
-    const { shareId } = useParams();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { currentFlow, startUserSession, fetchWorkshopDetails, detailLoading } = useFlow();
-
-    useEffect(() => {
-        if (shareId) {
-            fetchWorkshopDetails(shareId);
-        }
-    }, [shareId, fetchWorkshopDetails]);
+    const { currentFlow, startUserSession, detailLoading, role } = useUserFlow();
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
 
     if (detailLoading) {
         return (
@@ -38,9 +35,23 @@ export default function UserLanding() {
         );
     }
 
-    const handleStartSession = () => {
-        startUserSession(currentFlow.id);
-        navigate(`/flow/${currentFlow.id}/questions`);
+    const handleStartSession = async () => {
+        if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            setError(t('Email is required and must be valid'));
+            return;
+        }
+        try {
+            const response = await HttpService.post(`${role === 'consultant' ? API_CONFIG.workshops : API_CONFIG.userSubmissions}`, {
+                workshopEventId: currentFlow.id,
+                email: email,
+            });
+            if (response) {
+                startUserSession(currentFlow.id);
+                navigate(`/${role}/${currentFlow.id}/questions`);
+            }
+        } catch (error) {
+            console.error('Failed to fetch workshop details:', error);
+        }
     };
 
     return (
@@ -101,6 +112,18 @@ export default function UserLanding() {
                                     <p className='text-gray-600 text-sm leading-relaxed'>{t('user.consultantBio')}</p>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Email Input */}
+                        <div className='text-center mb-4'>
+                            <input
+                                type='email'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder={t('Enter your email to start the session')}
+                                className='w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+                            />
+                            {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
                         </div>
 
                         {/* Start Button */}

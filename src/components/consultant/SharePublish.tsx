@@ -217,7 +217,7 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                     </div>
 
                     {/* Preview and Finish */}
-                    <div className='flex items-center justify-between pt-6'>
+                    {/* <div className='flex items-center justify-between pt-6'>
                         <button className='px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2'>
                             <Eye className='w-4 h-4' />
                             <span>Preview Flow</span>
@@ -226,7 +226,7 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                         <button className='px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold'>
                             Save & Finish
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

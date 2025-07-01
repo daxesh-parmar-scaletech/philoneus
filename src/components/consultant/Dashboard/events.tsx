@@ -35,7 +35,7 @@ export default function Events() {
                                             <Edit3 className='w-4 h-4' />
                                         </Link>
                                         <Link
-                                            to={`/flow/${flow.shareId}`}
+                                            to={`/flow/${flow.id}`}
                                             className='p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors'
                                             title={t('dashboard.viewAsUser')}
                                         >
@@ -76,7 +76,7 @@ export default function Events() {
                                         {t('dashboard.editFlow')}
                                     </Link>
                                     <Link
-                                        to={`/flow/${flow.shareId}`}
+                                        to={`/flow/${flow.id}`}
                                         className='flex-1 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-center'
                                     >
                                         {t('dashboard.testFlow')}

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Brain } from 'lucide-react';
-import { useFlow } from '../../contexts/FlowContext';
+import { useUserFlow } from 'contexts/userFlowContext';
 
 export default function QuestionFlow() {
     const { shareId } = useParams();
     const navigate = useNavigate();
-    const { currentFlow, updateUserAnswers } = useFlow();
+    const { role, currentFlow, updateUserAnswers } = useUserFlow();
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState<Record<string, any>>({});
 
     const flow = currentFlow;
 
     if (!flow) {
-        navigate(`/flow/${shareId}`);
+        navigate(`/${role}/${shareId}`);
         return null;
     }
 
@@ -29,7 +29,7 @@ export default function QuestionFlow() {
     const handleNext = () => {
         if (isLastQuestion) {
             updateUserAnswers(answers);
-            navigate(`/flow/${shareId}/canvas`);
+            navigate(`/${role}/${shareId}/canvas`);
         } else {
             setCurrentQuestion(currentQuestion + 1);
         }
@@ -39,7 +39,7 @@ export default function QuestionFlow() {
         if (currentQuestion > 0) {
             setCurrentQuestion(currentQuestion - 1);
         } else {
-            navigate(`/flow/${shareId}`);
+            navigate(`/${role}/${shareId}`);
         }
     };
 

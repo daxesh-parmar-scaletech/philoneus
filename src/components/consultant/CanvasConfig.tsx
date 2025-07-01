@@ -71,14 +71,14 @@ export default function CanvasConfig({ flowData, onFlowDataChange }: CanvasConfi
 
     const handleSectionConfig = (sectionId: string, field: string, value: string) => {
         const canvasSections = flowData.canvasSections || [];
-        const existingSection = canvasSections.find((s: any) => s.id === sectionId);
+        const existingSection = canvasSections.find((s: any) => s.sectionId === sectionId);
 
         if (existingSection) {
-            const updatedSections = canvasSections.map((s: any) => (s.id === sectionId ? { ...s, [field]: value } : s));
+            const updatedSections = canvasSections.map((s: any) => (s.sectionId === sectionId ? { ...s, [field]: value } : s));
             onFlowDataChange({ canvasSections: updatedSections });
         } else {
             const newSection = {
-                id: sectionId,
+                sectionId: sectionId,
                 title: canvasTemplate.sections.find((s) => s.id === sectionId)?.title || '',
                 questions: [],
                 aiInstructions: field === 'aiInstructions' ? value : '',

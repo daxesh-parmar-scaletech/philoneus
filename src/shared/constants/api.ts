@@ -5,6 +5,11 @@ export const API_CONFIG = {
     login: 'auth/login',
     workshops: 'workshops',
     logout: 'logout',
+
+    //user
+    userWorkshops: 'participants/workshops',
+    userSubmissions: 'participants/submissions',
+    generateCanvas: 'participants/generate-canvas',
 };
 
 export const getUrl = (url: string, params: any = {}): string => {

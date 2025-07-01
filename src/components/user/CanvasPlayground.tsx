@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Brain, Download, MessageCircle, Save, Sparkles } from 'lucide-react';
-import { useFlow } from '../../contexts/FlowContext';
+import { useUserFlow } from 'contexts/userFlowContext';
 
 export default function CanvasPlayground() {
     const { shareId } = useParams();
     const navigate = useNavigate();
-    const { currentFlow, userSession, updateCanvasSection } = useFlow();
+    const { currentFlow, userSession, updateCanvasSection, role, answers } = useUserFlow();
     const [isLoading, setIsLoading] = useState(true);
     const [selectedSection, setSelectedSection] = useState<string | null>(null);
     const [aiSuggestion, setAiSuggestion] = useState<string>('');
@@ -79,11 +79,11 @@ export default function CanvasPlayground() {
     };
 
     const handleRequestReview = () => {
-        navigate(`/flow/${shareId}/complete`);
+        navigate(`/${role}/${shareId}/complete`);
     };
 
     if (!flow || !userSession) {
-        navigate(`/flow/${shareId}`);
+        navigate(`/${role}/${shareId}`);
         return null;
     }
 

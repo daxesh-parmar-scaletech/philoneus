@@ -35,7 +35,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Quick Test User Flows */}
-                <div className='mb-8'>
+                {/* <div className='mb-8'>
                     <h3 className='text-2xl font-bold text-gray-900 mb-6'>{t('dashboard.testUserExperience')}</h3>
                     <div className='bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-6'>
                         <div className='flex items-start space-x-3'>
@@ -64,7 +64,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Active Flows */}
                 <Events />
