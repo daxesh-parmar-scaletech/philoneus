@@ -54,6 +54,13 @@ interface FlowContextType {
     detailLoading: boolean;
     currentFlow: Flow | null;
     role: string | undefined;
+    setCanvasData: React.Dispatch<React.SetStateAction<CanvasDataType[]>>;
+    canvasData: CanvasDataType[];
+}
+
+interface CanvasDataType {
+    sectionId: string;
+    content: string[];
 }
 
 const UserFlowContext = createContext<FlowContextType | null>(null);
@@ -64,6 +71,7 @@ export function UserFlowProvider({ children }: { children: ReactNode }) {
     const [userSession, setUserSession] = useState<UserSession | null>(null);
     const [detailLoading, setDetailLoading] = useState(true);
     const [currentFlow, setCurrentFlow] = useState<Flow | null>(null);
+    const [canvasData, setCanvasData] = useState<CanvasDataType[]>([] as CanvasDataType[]);
 
     const isConsultant = userId === 'consultant';
 
@@ -139,8 +147,21 @@ export function UserFlowProvider({ children }: { children: ReactNode }) {
             startUserSession,
             updateUserAnswers,
             updateCanvasSection,
+            canvasData,
+            setCanvasData,
         }),
-        [userSession, detailLoading, currentFlow, userId, fetchWorkshopDetails, startUserSession, updateUserAnswers, updateCanvasSection]
+        [
+            userSession,
+            detailLoading,
+            currentFlow,
+            userId,
+            canvasData,
+            fetchWorkshopDetails,
+            startUserSession,
+            updateUserAnswers,
+            updateCanvasSection,
+            setCanvasData,
+        ]
     );
 
     return <UserFlowContext.Provider value={contextValue}>{children}</UserFlowContext.Provider>;

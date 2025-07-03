@@ -15,6 +15,113 @@
     .font-stretch {
         font-stretch: expanded;
     }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+
+    ::-webkit-scrollbar {
+        @apply h-1 w-1;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-[#f7fbfa];
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply rounded-lg bg-gray-400;
+    }
+
+    .scroll-on-hover {
+        scrollbar-gutter: stable both-edges;
+        overflow-y: hidden;
+        transition: overflow-y 0.3s ease;
+    }
+    .scroll-on-hover:hover {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+
+    @keyframes spin-slow {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    .animate-spin {
+        animation: spin-slow 0.5s linear infinite;
+    }
+
+    .typing-dots span {
+        opacity: 0;
+        animation: blink 1.5s infinite;
+    }
+
+    .typing-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+
+    pre {
+        white-space: pre-wrap; /* Allow text to wrap */
+        word-wrap: break-word; /* Break long words if necessary */
+        overflow-x: auto; /* Add horizontal scrollbar if content overflows */
+        border-radius: 8px; /* Rounded corners */
+        margin: 0; /* Remove default margin */
+        font-family: inherit; /* Use the same font as the rest of the chat */
+        line-height: 1.5; /* Improve readability */
+    }
+
+    .markdown > * {
+        all: revert;
+    }
+
+    .markdown ul {
+        @apply pl-0 my-2;
+    }
+
+    .markdown li {
+        @apply leading-6;
+    }
+
+    .markdown li::marker {
+        font-size: 14px;
+    }
+
+    @keyframes gradient-x {
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    .animate-gradient-x {
+        background-size: 200% 200%;
+        animation: gradient-x 5s ease infinite;
+    }
 }
 
 @font-face {

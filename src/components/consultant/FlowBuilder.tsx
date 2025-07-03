@@ -20,7 +20,7 @@ export default function FlowBuilder() {
         canvasType: 'business-model',
         questions: [],
         canvasSections: [],
-        isPublished: false,
+        isPublished: true,
         allowReviews: true,
     });
     const navigate = useNavigate();

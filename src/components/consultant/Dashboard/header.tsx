@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from 'contexts/AuthContext';
 import logo from 'assets/x.png';
-import LanguageSwitcher from '../../shared/LanguageSwitcher';
 
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -53,7 +52,6 @@ export default function Header() {
                             <HelpCircle className='w-4 h-4' />
                             <span>{t('dashboard.help')}</span>
                         </Link>
-                        <LanguageSwitcher />
                     </nav>
                     <div className='relative' ref={dropdownRef}>
                         <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className='flex items-center space-x-3 focus:outline-none'>

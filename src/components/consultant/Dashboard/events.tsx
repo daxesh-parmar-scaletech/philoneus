@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Edit3, Eye, Share2 } from 'lucide-react';
+import { Edit3, Eye, Share2, Trash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFlow } from 'contexts/FlowContext';
 
@@ -22,12 +22,12 @@ export default function Events() {
                         .map((flow) => (
                             <div
                                 key={flow.id}
-                                className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200 hover:-translate-y-1'
+                                className='flex flex-col justify-between bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200 hover:-translate-y-1'
                             >
                                 <div className='flex items-start justify-between mb-4'>
                                     <h4 className='text-lg font-semibold text-gray-900 line-clamp-2'>{flow.title}</h4>
                                     <div className='flex items-center space-x-1'>
-                                        <Link
+                                        {/* <Link
                                             to={`/consultant/flow/${flow.id}/edit`}
                                             className='p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors'
                                             title={t('dashboard.editFlow')}
@@ -40,12 +40,18 @@ export default function Events() {
                                             title={t('dashboard.viewAsUser')}
                                         >
                                             <Eye className='w-4 h-4' />
-                                        </Link>
+                                        </Link> */}
                                         <button
                                             className='p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors'
                                             title={t('dashboard.shareFlow')}
                                         >
                                             <Share2 className='w-4 h-4' />
+                                        </button>
+                                        <button
+                                            className='p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors'
+                                            title={t('common.delete')}
+                                        >
+                                            <Trash className='w-4 h-4' />
                                         </button>
                                     </div>
                                 </div>
@@ -54,15 +60,15 @@ export default function Events() {
                                 {/* Stats */}
                                 <div className='grid grid-cols-3 gap-4 mb-4'>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-blue-600'>{flow.starts || 0}</div>
+                                        <div className='text-lg font-bold text-blue-600'>{flow.submissionCounts.started || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.starts')}</div>
                                     </div>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-green-600'>{flow.completions || 0}</div>
+                                        <div className='text-lg font-bold text-green-600'>{flow.submissionCounts.completed || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.completions')}</div>
                                     </div>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-orange-600'>{flow.reviewRequests || 0}</div>
+                                        <div className='text-lg font-bold text-orange-600'>{flow.submissionCounts.reviewed || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.reviews')}</div>
                                     </div>
                                 </div>

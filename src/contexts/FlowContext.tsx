@@ -2,7 +2,7 @@ import { createContext, useContext, useState, ReactNode, useCallback, useMemo, u
 import { API_CONFIG } from 'shared/constants/api';
 import HttpService from 'shared/services/http.service';
 
-export type FlowData = Omit<Flow, 'id' | 'shareId' | 'completions' | 'starts' | 'reviewRequests'>;
+export type FlowData = Omit<Flow, 'id' | 'shareId' | 'completions' | 'starts' | 'reviewRequests' | 'submissionCounts'>;
 export type QuestionTYpe = 'text' | 'multiple-choice' | 'single-choice' | 'rating' | 'number';
 
 interface Question {
@@ -35,6 +35,11 @@ export interface Flow {
     completions: number;
     starts: number;
     reviewRequests: number;
+    submissionCounts: {
+        completed: number;
+        reviewed: number;
+        started: number;
+    };
 }
 
 interface UserSession {

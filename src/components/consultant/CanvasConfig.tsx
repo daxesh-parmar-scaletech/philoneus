@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Settings, Lightbulb, MessageSquare } from 'lucide-react';
 
 interface CanvasConfigProps {
@@ -7,67 +7,28 @@ interface CanvasConfigProps {
 }
 
 export default function CanvasConfig({ flowData, onFlowDataChange }: CanvasConfigProps) {
-    const getCanvasTemplate = () => {
-        switch (flowData.canvasType) {
-            case 'business-model':
-                return {
-                    title: 'Business Model Canvas',
-                    sections: [
-                        { id: 'key-partners', title: 'Key Partners', description: 'Who are your key partners and suppliers?' },
-                        { id: 'key-activities', title: 'Key Activities', description: 'What key activities does your value proposition require?' },
-                        { id: 'key-resources', title: 'Key Resources', description: 'What key resources does your value proposition require?' },
-                        { id: 'value-propositions', title: 'Value Propositions', description: 'What value do you deliver to the customer?' },
-                        {
-                            id: 'customer-relationships',
-                            title: 'Customer Relationships',
-                            description: 'What type of relationship does each customer segment expect?',
-                        },
-                        { id: 'channels', title: 'Channels', description: 'Through which channels do your customer segments want to be reached?' },
-                        { id: 'customer-segments', title: 'Customer Segments', description: 'For whom are you creating value?' },
-                        {
-                            id: 'cost-structure',
-                            title: 'Cost Structure',
-                            description: 'What are the most important costs inherent in your business model?',
-                        },
-                        { id: 'revenue-streams', title: 'Revenue Streams', description: 'For what value are your customers really willing to pay?' },
-                    ],
-                };
-            case 'swot':
-                return {
-                    title: 'SWOT Analysis',
-                    sections: [
-                        { id: 'strengths', title: 'Strengths', description: 'What advantages does your organization have?' },
-                        { id: 'weaknesses', title: 'Weaknesses', description: 'What could your organization improve?' },
-                        { id: 'opportunities', title: 'Opportunities', description: 'What opportunities can your organization pursue?' },
-                        { id: 'threats', title: 'Threats', description: 'What external factors could harm your organization?' },
-                    ],
-                };
-            case 'lean':
-                return {
-                    title: 'Lean Canvas',
-                    sections: [
-                        { id: 'problem', title: 'Problem', description: 'What problems are you solving?' },
-                        { id: 'solution', title: 'Solution', description: 'How do you solve these problems?' },
-                        { id: 'key-metrics', title: 'Key Metrics', description: 'What are your key performance indicators?' },
-                        {
-                            id: 'unique-value-proposition',
-                            title: 'Unique Value Proposition',
-                            description: 'What makes you different and worth buying?',
-                        },
-                        { id: 'unfair-advantage', title: 'Unfair Advantage', description: "What can't be easily copied or bought?" },
-                        { id: 'channels', title: 'Channels', description: 'How do you reach your customers?' },
-                        { id: 'customer-segments', title: 'Customer Segments', description: 'Who are your target customers?' },
-                        { id: 'cost-structure', title: 'Cost Structure', description: 'What are your main costs?' },
-                        { id: 'revenue-streams', title: 'Revenue Streams', description: 'How do you make money?' },
-                    ],
-                };
-            default:
-                return { title: 'Custom Canvas', sections: [] };
-        }
-    };
+    const canvasTemplate = useMemo(() => getCanvasTemplate(flowData.canvasType || 'business-model'), [flowData.canvasType]);
 
-    const canvasTemplate = getCanvasTemplate();
     const [selectedSection, setSelectedSection] = React.useState<string | null>(null);
+
+    useEffect(() => {
+        console.log('length:', flowData.canvasSections.length, canvasTemplate.sections.length);
+        if (flowData.canvasSections.length !== canvasTemplate.sections.length) {
+            console.log('in');
+
+            const canvasSections = canvasTemplate.sections.map((section) => {
+                return {
+                    sectionId: section.id,
+                    title: section.title,
+                    questions: [],
+                    aiInstructions: '',
+                    feedbackRules: '',
+                };
+            });
+
+            onFlowDataChange({ canvasSections: [...canvasSections] });
+        }
+    }, [canvasTemplate.sections, flowData.canvasSections]);
 
     const handleSectionConfig = (sectionId: string, field: string, value: string) => {
         const canvasSections = flowData.canvasSections || [];
@@ -88,9 +49,9 @@ export default function CanvasConfig({ flowData, onFlowDataChange }: CanvasConfi
         }
     };
 
+    console.log(' section:', flowData.canvasSections);
     const getSectionConfig = (sectionId: string, field: string) => {
         const section = flowData.canvasSections?.find((s: any) => s.sectionId === sectionId);
-        console.log(' section:', flowData.canvasSections);
         return section?.[field] || '';
     };
 
@@ -341,3 +302,62 @@ export default function CanvasConfig({ flowData, onFlowDataChange }: CanvasConfi
         </div>
     );
 }
+
+const getCanvasTemplate = (canvasType: string) => {
+    switch (canvasType) {
+        case 'business-model':
+            return {
+                title: 'Business Model Canvas',
+                sections: [
+                    { id: 'key-partners', title: 'Key Partners', description: 'Who are your key partners and suppliers?' },
+                    { id: 'key-activities', title: 'Key Activities', description: 'What key activities does your value proposition require?' },
+                    { id: 'key-resources', title: 'Key Resources', description: 'What key resources does your value proposition require?' },
+                    { id: 'value-propositions', title: 'Value Propositions', description: 'What value do you deliver to the customer?' },
+                    {
+                        id: 'customer-relationships',
+                        title: 'Customer Relationships',
+                        description: 'What type of relationship does each customer segment expect?',
+                    },
+                    { id: 'channels', title: 'Channels', description: 'Through which channels do your customer segments want to be reached?' },
+                    { id: 'customer-segments', title: 'Customer Segments', description: 'For whom are you creating value?' },
+                    {
+                        id: 'cost-structure',
+                        title: 'Cost Structure',
+                        description: 'What are the most important costs inherent in your business model?',
+                    },
+                    { id: 'revenue-streams', title: 'Revenue Streams', description: 'For what value are your customers really willing to pay?' },
+                ],
+            };
+        case 'swot':
+            return {
+                title: 'SWOT Analysis',
+                sections: [
+                    { id: 'strengths', title: 'Strengths', description: 'What advantages does your organization have?' },
+                    { id: 'weaknesses', title: 'Weaknesses', description: 'What could your organization improve?' },
+                    { id: 'opportunities', title: 'Opportunities', description: 'What opportunities can your organization pursue?' },
+                    { id: 'threats', title: 'Threats', description: 'What external factors could harm your organization?' },
+                ],
+            };
+        case 'lean':
+            return {
+                title: 'Lean Canvas',
+                sections: [
+                    { id: 'problem', title: 'Problem', description: 'What problems are you solving?' },
+                    { id: 'solution', title: 'Solution', description: 'How do you solve these problems?' },
+                    { id: 'key-metrics', title: 'Key Metrics', description: 'What are your key performance indicators?' },
+                    {
+                        id: 'unique-value-proposition',
+                        title: 'Unique Value Proposition',
+                        description: 'What makes you different and worth buying?',
+                    },
+                    { id: 'unfair-advantage', title: 'Unfair Advantage', description: "What can't be easily copied or bought?" },
+                    { id: 'channels', title: 'Channels', description: 'How do you reach your customers?' },
+                    { id: 'customer-segments', title: 'Customer Segments', description: 'Who are your target customers?' },
+                    { id: 'cost-structure', title: 'Cost Structure', description: 'What are your main costs?' },
+                    { id: 'revenue-streams', title: 'Revenue Streams', description: 'How do you make money?' },
+                ],
+            };
+        default:
+            return { title: 'Custom Canvas', sections: [] };
+    }
+};

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link2, QrCode, Code, Eye, Globe, Download } from 'lucide-react';
+// import React, { useState } from 'react';
+// import { Link2, QrCode, Code, Eye, Globe, Download } from 'lucide-react';
 
 interface SharePublishProps {
     flowData: any;
@@ -7,17 +7,16 @@ interface SharePublishProps {
 }
 
 export default function SharePublish({ flowData, onFlowDataChange }: SharePublishProps) {
-    console.log(' flowData:', flowData);
-    const [showQR, setShowQR] = useState(false);
-    const [showEmbed, setShowEmbed] = useState(false);
+    // const [showQR, setShowQR] = useState(false);
+    // const [showEmbed, setShowEmbed] = useState(false);
 
-    const shareUrl = `${window.location.origin}/flow/${flowData.title?.toLowerCase().replace(/[^a-z0-9]/g, '-') || 'untitled-flow'}`;
-    const embedCode = `<iframe src="${shareUrl}" width="100%" height="600" frameborder="0"></iframe>`;
+    // const shareUrl = `${window.location.origin}/flow/${flowData.title?.toLowerCase().replace(/[^a-z0-9]/g, '-') || 'untitled-flow'}`;
+    // const embedCode = `<iframe src="${shareUrl}" width="100%" height="600" frameborder="0"></iframe>`;
 
-    const copyToClipboard = (text: string) => {
-        navigator.clipboard.writeText(text);
-        // You could add a toast notification here
-    };
+    // const copyToClipboard = (text: string) => {
+    //     navigator.clipboard.writeText(text);
+    //     // You could add a toast notification here
+    // };
 
     const handlePublishToggle = () => {
         onFlowDataChange({ isPublished: !flowData.isPublished });
@@ -64,12 +63,11 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                     </div>
 
                     {/* Share Options */}
-                    {flowData.isPublished && (
+                    {/* {flowData.isPublished && (
                         <div className='bg-white border border-gray-200 rounded-xl p-6'>
                             <h3 className='text-lg font-semibold text-gray-900 mb-6'>Share Options</h3>
 
                             <div className='space-y-6'>
-                                {/* Shareable Link */}
                                 <div>
                                     <div className='flex items-center space-x-2 mb-3'>
                                         <Link2 className='w-5 h-5 text-blue-600' />
@@ -88,7 +86,6 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                                     </div>
                                 </div>
 
-                                {/* QR Code */}
                                 <div>
                                     <div className='flex items-center justify-between mb-3'>
                                         <div className='flex items-center space-x-2'>
@@ -118,7 +115,6 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                                     )}
                                 </div>
 
-                                {/* Embed Code */}
                                 <div>
                                     <div className='flex items-center justify-between mb-3'>
                                         <div className='flex items-center space-x-2'>
@@ -156,7 +152,7 @@ export default function SharePublish({ flowData, onFlowDataChange }: SharePublis
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )} */}
 
                     {/* Review Settings */}
                     <div className='bg-white border border-gray-200 rounded-xl p-6'>
