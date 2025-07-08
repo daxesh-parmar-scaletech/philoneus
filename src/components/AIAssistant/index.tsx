@@ -86,8 +86,10 @@ export function AIAssistant({ setIsOpen, isOpen }: AIAssistantProps) {
         setIsLoading(true);
 
         try {
-            const response = await HttpService.post(API_CONFIG.assistant, {
-                question: isRefData ? `${refData.title}: ${refData.items.map((str) => str).join(' ')}` + message : message,
+            const sectionId = refData.title;
+            const response = await HttpService.post(`${API_CONFIG.chat}/0686d465-142a-4341-be99-ab6f3ffafa35`, {
+                question: message,
+                sectionId: sectionId || '',
             });
             const data = response.data;
             // Handle the response based on its structure

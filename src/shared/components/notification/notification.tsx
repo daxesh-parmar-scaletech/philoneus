@@ -5,7 +5,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Notification: React.FC = () => {
     return (
-        <ToastContainer position='top-right' autoClose={4000} hideProgressBar newestOnTop={false} closeOnClick rtl={false} draggable pauseOnHover />
+        <ToastContainer
+            position='bottom-right'
+            autoClose={4000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            pauseOnHover
+        />
     );
 };
 

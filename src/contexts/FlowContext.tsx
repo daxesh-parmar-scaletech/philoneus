@@ -70,18 +70,25 @@ const mockFlows: Flow[] = [];
 
 export function FlowProvider({ children }: { children: ReactNode }) {
     const [flows, setFlows] = useState<Flow[]>(mockFlows);
+    console.log(' flows:', flows);
     const [userSession, setUserSession] = useState<UserSession | null>(null);
     const [loading, setLoading] = useState(false);
     const [detailLoading, setDetailLoading] = useState(false);
     const [currentFlow, setCurrentFlow] = useState<Flow | null>(null);
 
-    const createFlow = useCallback((flowData: Flow) => {
-        setFlows((prev) => [...prev, flowData]);
-    }, []);
+    const createFlow = useCallback(
+        (flowData: Flow) => {
+            setFlows((prev) => [...prev, { ...flowData }]);
+        },
+        [setFlows]
+    );
 
-    const updateFlow = useCallback((id: string, updates: Partial<Flow>) => {
-        setFlows((prev) => prev.map((flow) => (flow.id === id ? { ...flow, ...updates } : flow)));
-    }, []);
+    const updateFlow = useCallback(
+        (id: string, updates: Partial<Flow>) => {
+            setFlows((prev) => prev.map((flow) => (flow.id === id ? { ...flow, ...updates } : flow)));
+        },
+        [setFlows]
+    );
 
     const getFlowByShareId = useCallback(
         (shareId: string) => {

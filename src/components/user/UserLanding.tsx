@@ -9,7 +9,7 @@ import { API_CONFIG } from 'shared/constants/api';
 export default function UserLanding() {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { currentFlow, startUserSession, detailLoading, role } = useUserFlow();
+    const { currentFlow, startUserSession, detailLoading, role, isConsultant } = useUserFlow();
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
 
@@ -36,6 +36,10 @@ export default function UserLanding() {
     }
 
     const handleStartSession = async () => {
+        if (isConsultant) {
+            startUserSession(currentFlow.id);
+            navigate(`/${role}/${currentFlow.id}/questions`);
+        }
         if (!email || !/\S+@\S+\.\S+/.test(email)) {
             setError(t('Email is required and must be valid'));
             return;
@@ -115,16 +119,18 @@ export default function UserLanding() {
                         </div>
 
                         {/* Email Input */}
-                        <div className='text-center mb-4'>
-                            <input
-                                type='email'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder={t('Enter your email to start the session')}
-                                className='w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
-                            />
-                            {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
-                        </div>
+                        {!isConsultant && (
+                            <div className='text-center mb-4'>
+                                <input
+                                    type='email'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder={t('Enter your email to start the session')}
+                                    className='w-full max-w-md px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+                                />
+                                {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
+                            </div>
+                        )}
 
                         {/* Start Button */}
                         <div className='text-center'>

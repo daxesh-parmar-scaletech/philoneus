@@ -85,137 +85,137 @@ export function Dashboard() {
 
     const [lastEditedId, setLastEditedId] = useState('');
 
-    const fetchDashboard = useCallback(async () => {
-        try {
-            // const res = await HttpService.get(API_CONFIG.bmc);
-            // const data = res.data;
-            // if (data && data.length > 0) {
-            const res = {
-                data: [
-                    {
-                        sectionId: 'key-partners',
-                        content: [
-                            'Strategic **alliances** with industry-leading suppliers to ensure high-quality raw materials and reduce production costs',
-                            'Partnership with **technology firms** for advanced R&D capabilities and co-development of innovative products',
-                            'Collaboration with **logistics providers** to optimize supply chain efficiency and enhance delivery speed',
-                            'Engagement with **marketing agencies** to expand brand reach and effectively target new customer segments',
-                            'Agreements with **financial institutions** for flexible financing solutions and favorable credit terms',
-                            'Cooperation with **regulatory bodies** to stay compliant with industry standards and facilitate smoother market entry',
-                            'Networking with **industry associations** to gain insights into market trends and foster community relationships',
-                            'Joint ventures with **complementary businesses** to enter new markets and diversify product offerings',
-                        ],
-                    },
-                    {
-                        sectionId: 'key-resources',
-                        content: [
-                            'Physical infrastructure including **office space** and **manufacturing facilities**',
-                            'Intellectual property such as **patents**, **trademarks**, and **proprietary algorithms**',
-                            'Human resources comprising **experienced engineers**, **sales professionals**, and **customer service teams**',
-                            'Financial resources including **venture capital funding** and **operating cash flow**',
-                            'Strategic partnerships with **key suppliers** and **technology partners**',
-                            'Advanced **technology platforms** and **software tools** for product development',
-                            'Strong **brand reputation** and **market presence**',
-                            'Robust **distribution network** and **logistics capabilities**',
-                        ],
-                    },
-                    {
-                        sectionId: 'key-activities',
-                        content: [
-                            'Develop and refine **innovative products** that align with customer needs and market trends',
-                            'Implement **scalable marketing strategies** to drive customer acquisition and brand awareness',
-                            'Optimize **operations and logistics** to ensure efficient delivery and product availability',
-                            'Cultivate **strategic partnerships** to enhance market reach and resource sharing',
-                            'Enhance the **customer experience** through personalized service and support',
-                            'Leverage **data analytics** to make informed business decisions and improve product offerings',
-                            'Foster a culture of **continuous improvement** to maintain a competitive edge',
-                            'Expand **sales channels** by exploring new markets and distribution networks',
-                        ],
-                    },
-                    {
-                        sectionId: 'revenue-streams',
-                        content: [
-                            'Subscription-based model offering tiered **membership plans** for recurring revenue',
-                            'One-time **purchase fees** for premium product features and add-ons',
-                            'Commission-based revenue from **affiliate partnerships** and collaborations',
-                            'In-app **advertising** targeting niche customer segments for additional income',
-                            '**Licensing fees** for third-party usage of proprietary technology or content',
-                            'Event-based revenue through **workshops, webinars,** and live demonstrations',
-                            'Offering **consultation services** as a value-added package for premium clients',
-                            '**Freemium model** with upsell opportunities to paid versions offering advanced capabilities',
-                            'Revenue from **merchandise sales** linked to the brand identity and community',
-                            '**Data monetization** through insights and analytics services to external partners',
-                        ],
-                    },
-                    {
-                        sectionId: 'value-propositions',
-                        content: [
-                            '**Innovative solutions** that address unmet needs in the market, delivering unique value to customers.',
-                            '**Cost-effectiveness** through competitive pricing without compromising on quality, enhancing customer satisfaction.',
-                            '**High-quality products** with superior features that provide a distinct advantage over competitors.',
-                            '**Personalized services** tailored to individual customer preferences, fostering loyalty and repeat business.',
-                            '**Sustainability-focused offerings** that appeal to environmentally-conscious consumers and support eco-friendly practices.',
-                            '**Fast and reliable delivery** ensuring that customers receive products on time, increasing trust and reliability.',
-                            '**Exceptional customer support** that resolves issues promptly, creating a positive customer experience.',
-                            '**Technological innovation** that enhances product performance and user experience, setting the brand apart.',
-                            '**Comprehensive product range** that meets a wide array of customer needs, encouraging one-stop shopping.',
-                            '**Strong brand reputation** built on trust and quality, attracting and retaining a loyal customer base.',
-                        ],
-                    },
-                    {
-                        sectionId: 'customer-relationships',
-                        content: [
-                            '**Personalized Support** to enhance customer satisfaction and foster loyalty',
-                            '**Community Engagement** through social media and forums to build a sense of belonging',
-                            '**Feedback Loops** to continuously improve products and address customer needs',
-                            '**Loyalty Programs** that offer exclusive benefits and incentives',
-                            '**Self-Service Options** to empower customers and streamline support processes',
-                            '**Proactive Communication** to keep customers informed and engaged',
-                            '**Co-creation Opportunities** allowing customers to contribute to product development',
-                            '**VIP Access** to events and early product releases for high-value customers',
-                        ],
-                    },
-                    {
-                        sectionId: 'customer-segments',
-                        content: [
-                            '**Tech-savvy millennials** seeking innovative AI-driven solutions for everyday challenges',
-                            '**Small to medium enterprises (SMEs)** looking to enhance operational efficiency with AI tools',
-                            '**Healthcare providers** interested in AI applications for improved patient care and diagnostics',
-                            '**Educational institutions** aiming to integrate AI technology into their curriculum and operations',
-                            '**E-commerce platforms** seeking personalized AI-driven customer experiences and analytics',
-                            '**Financial services firms** needing advanced AI algorithms for risk assessment and fraud detection',
-                            '**Urban planners** and **smart city developers** using AI for sustainable city management solutions',
-                            '**Content creators** and **media companies** leveraging AI for content customization and audience engagement',
-                            '**Retailers** looking to implement AI for inventory management and customer service enhancements',
-                            '**Developers** and **AI enthusiasts** seeking cutting-edge AI frameworks and tools for innovation',
-                        ],
-                    },
-                    {
-                        sectionId: 'channels',
-                        content: [
-                            'Direct sales through an **online platform** to reach a global audience effectively',
-                            'Partnerships with **influencer networks** to enhance brand visibility and credibility',
-                            'Utilization of **social media platforms** like Instagram and TikTok for targeted marketing campaigns',
-                            'Collaboration with **e-commerce marketplaces** such as Amazon and eBay to increase product accessibility',
-                            'Engagement through **email marketing** for personalized offers and updates to customers',
-                            'Presence at **industry trade shows** and events to build direct relationships with potential clients',
-                            'Utilizing **affiliate marketing** programs to incentivize third-party promotions',
-                            'Offering **webinars and virtual workshops** to educate and engage the target audience',
-                            "Building a robust **SEO strategy** to drive organic traffic to the company's website",
-                        ],
-                    },
-                ],
-                message: 'Canvas content generated successfully',
-                statusCode: 201,
-                success: true,
-            };
-            setSectionsData(res.data);
-            // }
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            console.error('Error fetching dashboard:', error);
-        }
-    }, []);
+    // const fetchDashboard = useCallback(async () => {
+    //     try {
+    //         // const res = await HttpService.get(API_CONFIG.bmc);
+    //         // const data = res.data;
+    //         // if (data && data.length > 0) {
+    //         const res = {
+    //             data: [
+    //                 {
+    //                     sectionId: 'key-partners',
+    //                     content: [
+    //                         'Strategic **alliances** with industry-leading suppliers to ensure high-quality raw materials and reduce production costs',
+    //                         'Partnership with **technology firms** for advanced R&D capabilities and co-development of innovative products',
+    //                         'Collaboration with **logistics providers** to optimize supply chain efficiency and enhance delivery speed',
+    //                         'Engagement with **marketing agencies** to expand brand reach and effectively target new customer segments',
+    //                         'Agreements with **financial institutions** for flexible financing solutions and favorable credit terms',
+    //                         'Cooperation with **regulatory bodies** to stay compliant with industry standards and facilitate smoother market entry',
+    //                         'Networking with **industry associations** to gain insights into market trends and foster community relationships',
+    //                         'Joint ventures with **complementary businesses** to enter new markets and diversify product offerings',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'key-resources',
+    //                     content: [
+    //                         'Physical infrastructure including **office space** and **manufacturing facilities**',
+    //                         'Intellectual property such as **patents**, **trademarks**, and **proprietary algorithms**',
+    //                         'Human resources comprising **experienced engineers**, **sales professionals**, and **customer service teams**',
+    //                         'Financial resources including **venture capital funding** and **operating cash flow**',
+    //                         'Strategic partnerships with **key suppliers** and **technology partners**',
+    //                         'Advanced **technology platforms** and **software tools** for product development',
+    //                         'Strong **brand reputation** and **market presence**',
+    //                         'Robust **distribution network** and **logistics capabilities**',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'key-activities',
+    //                     content: [
+    //                         'Develop and refine **innovative products** that align with customer needs and market trends',
+    //                         'Implement **scalable marketing strategies** to drive customer acquisition and brand awareness',
+    //                         'Optimize **operations and logistics** to ensure efficient delivery and product availability',
+    //                         'Cultivate **strategic partnerships** to enhance market reach and resource sharing',
+    //                         'Enhance the **customer experience** through personalized service and support',
+    //                         'Leverage **data analytics** to make informed business decisions and improve product offerings',
+    //                         'Foster a culture of **continuous improvement** to maintain a competitive edge',
+    //                         'Expand **sales channels** by exploring new markets and distribution networks',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'revenue-streams',
+    //                     content: [
+    //                         'Subscription-based model offering tiered **membership plans** for recurring revenue',
+    //                         'One-time **purchase fees** for premium product features and add-ons',
+    //                         'Commission-based revenue from **affiliate partnerships** and collaborations',
+    //                         'In-app **advertising** targeting niche customer segments for additional income',
+    //                         '**Licensing fees** for third-party usage of proprietary technology or content',
+    //                         'Event-based revenue through **workshops, webinars,** and live demonstrations',
+    //                         'Offering **consultation services** as a value-added package for premium clients',
+    //                         '**Freemium model** with upsell opportunities to paid versions offering advanced capabilities',
+    //                         'Revenue from **merchandise sales** linked to the brand identity and community',
+    //                         '**Data monetization** through insights and analytics services to external partners',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'value-propositions',
+    //                     content: [
+    //                         '**Innovative solutions** that address unmet needs in the market, delivering unique value to customers.',
+    //                         '**Cost-effectiveness** through competitive pricing without compromising on quality, enhancing customer satisfaction.',
+    //                         '**High-quality products** with superior features that provide a distinct advantage over competitors.',
+    //                         '**Personalized services** tailored to individual customer preferences, fostering loyalty and repeat business.',
+    //                         '**Sustainability-focused offerings** that appeal to environmentally-conscious consumers and support eco-friendly practices.',
+    //                         '**Fast and reliable delivery** ensuring that customers receive products on time, increasing trust and reliability.',
+    //                         '**Exceptional customer support** that resolves issues promptly, creating a positive customer experience.',
+    //                         '**Technological innovation** that enhances product performance and user experience, setting the brand apart.',
+    //                         '**Comprehensive product range** that meets a wide array of customer needs, encouraging one-stop shopping.',
+    //                         '**Strong brand reputation** built on trust and quality, attracting and retaining a loyal customer base.',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'customer-relationships',
+    //                     content: [
+    //                         '**Personalized Support** to enhance customer satisfaction and foster loyalty',
+    //                         '**Community Engagement** through social media and forums to build a sense of belonging',
+    //                         '**Feedback Loops** to continuously improve products and address customer needs',
+    //                         '**Loyalty Programs** that offer exclusive benefits and incentives',
+    //                         '**Self-Service Options** to empower customers and streamline support processes',
+    //                         '**Proactive Communication** to keep customers informed and engaged',
+    //                         '**Co-creation Opportunities** allowing customers to contribute to product development',
+    //                         '**VIP Access** to events and early product releases for high-value customers',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'customer-segments',
+    //                     content: [
+    //                         '**Tech-savvy millennials** seeking innovative AI-driven solutions for everyday challenges',
+    //                         '**Small to medium enterprises (SMEs)** looking to enhance operational efficiency with AI tools',
+    //                         '**Healthcare providers** interested in AI applications for improved patient care and diagnostics',
+    //                         '**Educational institutions** aiming to integrate AI technology into their curriculum and operations',
+    //                         '**E-commerce platforms** seeking personalized AI-driven customer experiences and analytics',
+    //                         '**Financial services firms** needing advanced AI algorithms for risk assessment and fraud detection',
+    //                         '**Urban planners** and **smart city developers** using AI for sustainable city management solutions',
+    //                         '**Content creators** and **media companies** leveraging AI for content customization and audience engagement',
+    //                         '**Retailers** looking to implement AI for inventory management and customer service enhancements',
+    //                         '**Developers** and **AI enthusiasts** seeking cutting-edge AI frameworks and tools for innovation',
+    //                     ],
+    //                 },
+    //                 {
+    //                     sectionId: 'channels',
+    //                     content: [
+    //                         'Direct sales through an **online platform** to reach a global audience effectively',
+    //                         'Partnerships with **influencer networks** to enhance brand visibility and credibility',
+    //                         'Utilization of **social media platforms** like Instagram and TikTok for targeted marketing campaigns',
+    //                         'Collaboration with **e-commerce marketplaces** such as Amazon and eBay to increase product accessibility',
+    //                         'Engagement through **email marketing** for personalized offers and updates to customers',
+    //                         'Presence at **industry trade shows** and events to build direct relationships with potential clients',
+    //                         'Utilizing **affiliate marketing** programs to incentivize third-party promotions',
+    //                         'Offering **webinars and virtual workshops** to educate and engage the target audience',
+    //                         "Building a robust **SEO strategy** to drive organic traffic to the company's website",
+    //                     ],
+    //                 },
+    //             ],
+    //             message: 'Canvas content generated successfully',
+    //             statusCode: 201,
+    //             success: true,
+    //         };
+    //         setSectionsData(res.data);
+    //         // }
+    //         setLoading(false);
+    //     } catch (error) {
+    //         setLoading(false);
+    //         console.error('Error fetching dashboard:', error);
+    //     }
+    // }, []);
 
     const handleEdit = useCallback(
         async (id: string, newContent: string[], animate?: boolean = false) => {

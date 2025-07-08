@@ -56,6 +56,7 @@ interface FlowContextType {
     role: string | undefined;
     setCanvasData: React.Dispatch<React.SetStateAction<CanvasDataType[]>>;
     canvasData: CanvasDataType[];
+    isConsultant: boolean;
 }
 
 interface CanvasDataType {
@@ -73,7 +74,7 @@ export function UserFlowProvider({ children }: { children: ReactNode }) {
     const [currentFlow, setCurrentFlow] = useState<Flow | null>(null);
     const [canvasData, setCanvasData] = useState<CanvasDataType[]>([] as CanvasDataType[]);
 
-    const isConsultant = userId === 'consultant';
+    const isConsultant = userId === 'flow';
 
     const startUserSession = useCallback(
         (flowId: string) => {
@@ -149,6 +150,7 @@ export function UserFlowProvider({ children }: { children: ReactNode }) {
             updateCanvasSection,
             canvasData,
             setCanvasData,
+            isConsultant,
         }),
         [
             userSession,
@@ -161,6 +163,7 @@ export function UserFlowProvider({ children }: { children: ReactNode }) {
             updateUserAnswers,
             updateCanvasSection,
             setCanvasData,
+            isConsultant,
         ]
     );
 

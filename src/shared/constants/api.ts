@@ -10,6 +10,8 @@ export const API_CONFIG = {
     userWorkshops: 'participants/workshops',
     userSubmissions: 'participants/submissions',
     generateCanvas: 'participants/generate-canvas',
+
+    chat: 'ai/chat',
 };
 
 export const getUrl = (url: string, params: any = {}): string => {

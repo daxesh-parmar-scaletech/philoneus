@@ -60,15 +60,15 @@ export default function Events() {
                                 {/* Stats */}
                                 <div className='grid grid-cols-3 gap-4 mb-4'>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-blue-600'>{flow.submissionCounts.started || 0}</div>
+                                        <div className='text-lg font-bold text-blue-600'>{flow.submissionCounts?.started || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.starts')}</div>
                                     </div>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-green-600'>{flow.submissionCounts.completed || 0}</div>
+                                        <div className='text-lg font-bold text-green-600'>{flow.submissionCounts?.completed || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.completions')}</div>
                                     </div>
                                     <div className='text-center'>
-                                        <div className='text-lg font-bold text-orange-600'>{flow.submissionCounts.reviewed || 0}</div>
+                                        <div className='text-lg font-bold text-orange-600'>{flow.submissionCounts?.reviewed || 0}</div>
                                         <div className='text-xs text-gray-500'>{t('dashboard.reviews')}</div>
                                     </div>
                                 </div>
