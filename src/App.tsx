@@ -1,79 +1,71 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import isEmpty from "lodash/isEmpty";
 
-import Dashboard from 'components/consultant/Dashboard';
-import ConsultantProfile from 'components/consultant/ConsultantProfile';
-import ConsultantHelp from 'components/consultant/ConsultantHelp';
-import FlowBuilder from 'components/consultant/FlowBuilder';
+import Dashboard from "components/consultant/Dashboard";
+import ConsultantProfile from "components/consultant/ConsultantProfile";
+import ConsultantHelp from "components/consultant/ConsultantHelp";
 
-import QuestionFlow from 'components/user/QuestionFlow';
-import CanvasPlayground from 'components/user/CanvasPlayground';
-import ReviewRequest from 'components/user/ReviewRequest';
-import LoginPage from 'components/Auth/LoginPage';
-import UserLanding from 'components/user/UserLanding';
+import QuestionFlow from "components/user/QuestionFlow";
+import CanvasPlayground from "components/user/CanvasPlayground";
+import ReviewRequest from "components/user/ReviewRequest";
+import LoginPage from "components/Auth/LoginPage";
+import UserLanding from "components/user/UserLanding";
 
-import { FlowProvider } from 'contexts/FlowContext';
-import { UserFlowProvider } from 'contexts/userFlowContext';
-import { useAuth } from 'contexts/AuthContext';
+import { FlowProvider } from "contexts/FlowContext";
+import { useAuth } from "contexts/AuthContext";
+import { UserFlowProvider } from "contexts/userFlowContext";
 
 function App() {
-    const { user } = useAuth();
-    const isAuthenticated = !isEmpty(user);
+  const { user } = useAuth();
+  const isAuthenticated = !isEmpty(user);
 
-    return (
-        <Router>
-            <Routes>
-                {/* Authenticated Consultant Routes */}
-                {isAuthenticated && (
-                    <Route path='/consultant' element={<ConsultantWrapper />}>
-                        <Route index element={<Dashboard />} />
-                        <Route path='profile' element={<ConsultantProfile />} />
-                        <Route path='help' element={<ConsultantHelp />} />
-                        <Route path='flow/new' element={<FlowBuilder />} />
-                        <Route path='flow/:id/edit' element={<FlowBuilder />} />
-                        <Route path='*' element={<Navigate to='/consultant' replace />} />
-                    </Route>
-                )}
+  return (
+    <Routes>
+      {/* Authenticated Consultant Routes */}
+      {isAuthenticated && (
+        <Route path="/consultant" element={<ConsultantWrapper />}>
+          <Route index element={<Dashboard />} />
+          <Route path="profile" element={<ConsultantProfile />} />
+          <Route path="help" element={<ConsultantHelp />} />
+          <Route path="*" element={<Navigate to="/consultant" replace />} />
+        </Route>
+      )}
 
-                {/* Public/User Routes */}
-                <Route path='/:userId/:shareId' element={<FlowWrapper />}>
-                    <Route index element={<UserLanding />} />
-                    <Route path='questions' element={<QuestionFlow />} />
-                    <Route path='canvas' element={<CanvasPlayground />} />
-                    <Route path='complete' element={<ReviewRequest />} />
-                </Route>
+      {/* Public/User Routes */}
+      <Route path="/flow/:id" element={<UserFlowWrapper />}>
+        <Route index element={<UserLanding />} />
+        <Route path="questions" element={<QuestionFlow />} />
+        <Route path="canvas" element={<CanvasPlayground />} />
+        <Route path="complete" element={<ReviewRequest />} />
+      </Route>
 
-                {/* Login Route (only when not authenticated) */}
-                {!isAuthenticated && <Route path='/login' element={<LoginPage />} />}
+      {/* Login Route (only when not authenticated) */}
+      {!isAuthenticated && <Route path="/login" element={<LoginPage />} />}
 
-                {/* Fallback Routes */}
-                <Route path='/' element={<Navigate to='/login' replace />} />
-                <Route path='*' element={<Navigate to={isAuthenticated ? '/consultant' : '/login'} replace />} />
-            </Routes>
-        </Router>
-    );
+      {/* Fallback Routes */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route
+        path="*"
+        element={
+          <Navigate to={isAuthenticated ? "/consultant" : "/login"} replace />
+        }
+      />
+    </Routes>
+  );
 }
 
 export default App;
 
-const FlowWrapper = () => {
-    const { userId } = useParams();
-
-    if (!userId || !['user', 'flow'].includes(userId)) {
-        return <Navigate to='/login' replace />;
-    }
-
-    return (
-        <UserFlowProvider>
-            <Outlet />
-        </UserFlowProvider>
-    );
-};
-
 const ConsultantWrapper = () => (
-    <FlowProvider>
-        <div className='min-h-screen bg-gray-50'>
-            <Outlet />
-        </div>
-    </FlowProvider>
+  <FlowProvider>
+    <div className="min-h-screen bg-gray-50">
+      <Outlet />
+    </div>
+  </FlowProvider>
+);
+
+const UserFlowWrapper = () => (
+  <UserFlowProvider>
+    <Outlet />
+  </UserFlowProvider>
 );
